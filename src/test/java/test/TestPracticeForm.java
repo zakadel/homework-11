@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import pageObject.RegistrationForm;
 
 import static com.codeborne.selenide.Selenide.open;
+import static io.qameta.allure.Allure.step;
 
 public class TestPracticeForm extends BaseTest {
 
@@ -33,20 +34,9 @@ public class TestPracticeForm extends BaseTest {
     @DisplayName("Automation-practice-form")
     @Owner("Zakiev A.R.")
     @Test
-    void entryPoint() {
-        Step1OpenUrl();
-        Step2FillFormRegistrations();
-        Step3DataCheck();
-    }
-
-    @Step("Открыть страницу")
-    void Step1OpenUrl() {
-        open("/automation-practice-form");
-    }
-
-    @Step("Заполнение формы регистрации")
-    void Step2FillFormRegistrations() {
-        registrationForm
+    void testForm() {
+        step("Открытие формы", () -> open("/automation-practice-form"));
+        step("Заполнение формы", () -> registrationForm
                 .firstNameInput(firstName)
                 .lastName(lastName)
                 .userEmail(email)
@@ -58,12 +48,8 @@ public class TestPracticeForm extends BaseTest {
                 .address(address)
                 .state(state)
                 .city(city)
-                .submitForm();
-    }
-
-    @Step("Проверка данных")
-    void Step3DataCheck() {
-        registrationForm
+                .submitForm());
+        step("Проверка данных", () -> registrationForm
                 .checkResultInModal("Student Name", firstName + " " + lastName)
                 .checkResultInModal("Student Email", email)
                 .checkResultInModal("Gender", gender)
@@ -73,6 +59,6 @@ public class TestPracticeForm extends BaseTest {
                 .checkResultInModal("Subjects", subjects)
                 .checkResultInModal("Hobbies", String.join(", ", hobbies))
                 .checkResultInModal("Address", address)
-                .checkResultInModal("State and City", state + " " + city);
+                .checkResultInModal("State and City", state + " " + city));
     }
 }
